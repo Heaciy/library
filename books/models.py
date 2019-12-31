@@ -5,7 +5,7 @@ class Author(models.Model):
     """The name of the first author of the title, if applicable."""
     name = models.CharField(max_length=20)
     # books = models.ManyToManyField()
-    description = models.TextField(default='', null=True)
+    description = models.TextField(default='', blank=True)
 
     class Meta:
         verbose_name = 'Author'
@@ -19,7 +19,7 @@ class Publisher(models.Model):
     """	The name of the publishing company for this item."""
     name = models.CharField(max_length=20)
     # books = models.ManyToManyField()
-    description = models.TextField(default='', null=True)
+    description = models.TextField(default='', blank=True)
 
     class Meta:
         verbose_name = 'Publisher'
@@ -94,14 +94,14 @@ class Book(models.Model):
     # The unique identifier for a cataloged item within the Library's Integrated Library System (ILS).
     bibnum = models.PositiveIntegerField(verbose_name='Bibnum')
     # The full title of an item.
-    title = models.CharField(max_length=20, verbose_name='Title')
-    author = models.ManyToManyField(Author, verbose_name='Author')
+    title = models.CharField(max_length=40, verbose_name='Title')
+    author = models.ManyToManyField(Author, verbose_name='Author', blank=True)
     # Comma-delimited list of ISBN(s) for this title.
-    isbn = models.CharField(max_length=20, verbose_name='ISBN')
+    isbn = models.CharField(max_length=60, verbose_name='ISBN', default='', blank=True)
     # Date (year) of publication.
-    publicationyear = models.DateField(verbose_name='PublicationYear')
-    publisher = models.ForeignKey(Publisher, on_delete=models.DO_NOTHING, verbose_name='Publisher')
-    subjects = models.ManyToManyField(Subjects, verbose_name='Subjects')
+    publicationyear = models.PositiveIntegerField(verbose_name='PublicationYear', blank=True)
+    publisher = models.ForeignKey(Publisher, verbose_name='Publisher', on_delete=models.DO_NOTHING, blank=True)
+    subjects = models.ManyToManyField(Subjects, verbose_name='Subjects', blank=True)
     itemtype = models.ForeignKey(ItemType, verbose_name='ItemType', on_delete=models.DO_NOTHING)
     itemcollection = models.ForeignKey(ItemCollection, verbose_name='ItemCollection', on_delete=models.DO_NOTHING)
     # Label that indicates if an item floats.
@@ -109,7 +109,6 @@ class Book(models.Model):
     itemlocation = models.ForeignKey(ItemLocation, verbose_name='ItemLocation', on_delete=models.DO_NOTHING)
     # The date when this item count was collected from the ILS (Horizon).
     reportdate = models.DateField(verbose_name='ReportYear')
-    #
     # The number of items in this location, collection, item type, and item status as of the report date.
     itemcount = models.PositiveIntegerField(verbose_name='ItemCount')
 
@@ -118,4 +117,4 @@ class Book(models.Model):
         verbose_name_plural = 'Books'
 
     def __str__(self):
-        return self.name
+        return '<Book[{}]: {}>'.format(self.id, self.title.split(' / ')[0])
