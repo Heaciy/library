@@ -10,6 +10,7 @@ class Author(models.Model):
     class Meta:
         verbose_name = 'Author'
         verbose_name_plural = 'Authors'
+        ordering = ['name', ]
 
     def __str__(self):
         return self.name
@@ -38,6 +39,7 @@ class Subjects(models.Model):
     class Meta:
         verbose_name = 'Subjects'
         verbose_name_plural = 'Subjects'
+        ordering = ['name', ]
 
     def __str__(self):
         return self.name
@@ -115,6 +117,7 @@ class Book(models.Model):
     class Meta:
         verbose_name = 'Book'
         verbose_name_plural = 'Books'
+        ordering = ['bibnum', ]
 
     def __str__(self):
         return '<Book[{}]: {}>'.format(self.id, self.title.split(' / ')[0])
