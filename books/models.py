@@ -3,7 +3,7 @@ from django.db import models
 
 class Author(models.Model):
     """The name of the first author of the title, if applicable."""
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=40)
     # books = models.ManyToManyField()
     description = models.TextField(default='', blank=True)
 
@@ -34,7 +34,7 @@ class Subjects(models.Model):
     """A comma-separated list of the subject authority records
     associated with the title, including Motion Pictures,
     Computer Programming, etc. Typically these are highly specific."""
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=80)
 
     class Meta:
         verbose_name = 'Subjects'
@@ -79,8 +79,8 @@ class ItemLocation(models.Model):
     name = models.CharField(max_length=10)
 
     class Meta:
-        verbose_name = 'ItemCollection'
-        verbose_name_plural = 'ItemCollections'
+        verbose_name = 'ItemLocation'
+        verbose_name_plural = 'ItemLocation'
 
     def __str__(self):
         return self.name
@@ -96,7 +96,7 @@ class Book(models.Model):
     # The unique identifier for a cataloged item within the Library's Integrated Library System (ILS).
     bibnum = models.PositiveIntegerField(verbose_name='Bibnum')
     # The full title of an item.
-    title = models.CharField(max_length=40, verbose_name='Title')
+    title = models.CharField(max_length=128, verbose_name='Title')
     author = models.ManyToManyField(Author, verbose_name='Author', blank=True)
     # Comma-delimited list of ISBN(s) for this title.
     isbn = models.CharField(max_length=60, verbose_name='ISBN', default='', blank=True)
